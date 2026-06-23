@@ -19,9 +19,9 @@ export default function DashboardPage() {
             try {
                 // We use Promise.all to fetch all master data simultaneously
                 const [deptRes, posRes, empRes] = await Promise.all([
-                    api.get("/departments").catch(() => []),
-                    api.get("/positions").catch(() => []),
-                    api.get("/employees").catch(() => [])
+                    api.get("departments").catch(() => []),
+                    api.get("positions").catch(() => []),
+                    api.get("employees").catch(() => [])
                 ]);
 
                 setMetrics({

@@ -29,17 +29,25 @@ export const api = {
     get(endpoint: string) {
         return this.request(endpoint, { method: "GET" });
     },
+
     post(endpoint: string, body: any) {
-        // special handling for FastAPI's OAuth2 login which requires FormData
-        const isFormData = body instanceof URLSearchParams;
+        const isUrlEncoded = body instanceof URLSearchParams;
+        const isMultipart = typeof window !== "undefined" && body instanceof FormData;
 
         const options: RequestInit = {
             method: "POST",
-            body: isFormData ? body : JSON.stringify(body),
-            headers: isFormData
-                ? { "Content-Type": "application/x-www-form-urlencoded" }
-                : {},
+            // decide how to format the body based on what is being sent
+            body: isMultipart ? body : (isUrlEncoded ? body : JSON.stringify(body)),
         };
+
+        // set the headers accordingly
+        if (isUrlEncoded) {
+            options.headers = { "Content-Type": "application/x-www-form-urlencoded" };
+        } else if (isMultipart) {
+            // CRITICAL: Leave headers empty for multipart form data.
+            // the browser will automatically set 'Content-Type: multipart/form-data; boundary=---...'
+            options.headers = {};
+        }
 
         return this.request(endpoint, options);
     }
