@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 from jose import jwt
-from passlib.context import CryptContext
+import bcrypt
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,13 +15,18 @@ if not SECRET_KEY:
 if not ALGORITHM:
     raise ValueError("ALGORITHM is not set in the environment variables.")
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def _truncate_to_72_bytes(password: str) -> str:
+    # bcrypt only uses the first 72 bytes of a password.
+    return password.encode('utf-8')[:72].decode('utf-8', 'ignore')
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    truncated_password = _truncate_to_72_bytes(plain_password).encode("utf-8")
+    hashed_password_bytes = hashed_password.encode("utf-8")
+    return bcrypt.checkpw(truncated_password, hashed_password_bytes)
 
 def get_password_hash(password):
-    return pwd_context.hash(password)
+    truncated_password = _truncate_to_72_bytes(password).encode("utf-8")
+    return bcrypt.hashpw(truncated_password, bcrypt.gensalt()).decode("utf-8")
 
 def create_access_token(data: dict):
     to_encode = data.copy()
