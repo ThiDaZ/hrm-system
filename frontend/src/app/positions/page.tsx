@@ -8,32 +8,21 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Modal from "@/components/ui/Modal";
 import { api } from "@/lib/api";
+import {Position, Department} from "@/types/positions";
 
-interface Department {
-    id: number;
-    name: string;
-}
-
-interface Position {
-    id: number;
-    title: string;
-    description: string | null;
-    department_id: number;
-    is_active: boolean;
-}
 
 export default function PositionsPage() {
     const [positions, setPositions] = useState<Position[]>([]);
     const [departments, setDepartments] = useState<Department[]>([]);
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    // Form State
+    // form State
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [departmentId, setDepartmentId] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    // Edit Modal State
+    // edit Modal State
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingPos, setEditingPos] = useState<Position | null>(null);
     const [editTitle, setEditTitle] = useState("");
@@ -42,7 +31,7 @@ export default function PositionsPage() {
     const [editIsActive, setEditIsActive] = useState(true);
     const [isEditLoading, setIsEditLoading] = useState(false);
 
-    // Fetch both positions and departments
+    // fetch both positions and departments
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -128,7 +117,7 @@ export default function PositionsPage() {
         label: d.name
     }));
 
-    // Helper to map department ID to its name for the table display
+    // Helper to map department.ts ID to its name for the table display
     const getDepartmentName = (id: number) => {
         const dept = departments.find(d => d.id === id);
         return dept ? dept.name : `Unknown (ID: ${id})`;
@@ -137,11 +126,11 @@ export default function PositionsPage() {
     return (
         <DashboardLayout>
             <div className="flex flex-col gap-6">
-                <h1 className="text-2xl font-bold text-slate-800">Positions</h1>
+                <h1 className="text-2xl font-bold text-surface-deep">Positions</h1>
 
                 {/* Create Position Form */}
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h2 className="text-lg font-medium mb-4 text-slate-800">Add New Position</h2>
+                    <h2 className="text-lg font-medium mb-4 text-surface-deep">Add New Position</h2>
                     <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                         <Input
                             label="Job Title"
@@ -183,7 +172,7 @@ export default function PositionsPage() {
                         positions.map((pos) => (
                             <tr key={pos.id} className="hover:bg-slate-50 transition-colors">
                                 <td className="px-6 py-4">{pos.id}</td>
-                                <td className="px-6 py-4 font-medium text-slate-800">{pos.title}</td>
+                                <td className="px-6 py-4 font-medium text-surface-deep">{pos.title}</td>
                                 <td className="px-6 py-4">{getDepartmentName(pos.department_id)}</td>
                                 <td className="px-6 py-4">{pos.description || "-"}</td>
                                 <td className="px-6 py-4">
@@ -194,8 +183,8 @@ export default function PositionsPage() {
                   </span>
                                 </td>
                                 <td className="px-6 py-4 flex gap-3">
-                                    <button onClick={() => openEditModal(pos)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">Edit</button>
-                                    <button onClick={() => handleDelete(pos.id)} className="text-red-600 hover:text-red-800 text-sm font-medium">Delete</button>
+                                    <button onClick={() => openEditModal(pos)} className="text-primary hover:text-primary-hover text-sm font-medium">Edit</button>
+                                    <button onClick={() => handleDelete(pos.id)} className="text-danger hover:text-danger-hover text-sm font-medium">Delete</button>
                                 </td>
                             </tr>
                         ))

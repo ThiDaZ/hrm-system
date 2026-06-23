@@ -17,7 +17,7 @@ export default function DashboardPage() {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                // We use Promise.all to fetch all master data simultaneously
+                // we use Promise.all to fetch all master data simultaneously
                 const [deptRes, posRes, empRes] = await Promise.all([
                     api.get("departments").catch(() => []),
                     api.get("positions").catch(() => []),
@@ -42,7 +42,7 @@ export default function DashboardPage() {
     return (
         <DashboardLayout>
             <div className="flex flex-col gap-6">
-                <h1 className="text-2xl font-bold text-slate-800">Dashboard Overview</h1>
+                <h1 className="text-2xl font-bold text-surface-deep">Dashboard Overview</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card title="Total Employees" value={metrics.totalEmployees} />
@@ -52,8 +52,8 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4">Monthly Payroll Total</h3>
-                    <p className="text-4xl font-bold text-blue-600">
+                    <h3 className="text-lg font-bold text-surface-deep mb-4">Monthly Payroll Total</h3>
+                    <p className="text-4xl font-bold text-primary-hover">
                         Rs {metrics.monthlyPayroll.toLocaleString()}
                     </p>
                 </div>

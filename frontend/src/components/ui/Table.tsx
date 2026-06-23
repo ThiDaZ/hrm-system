@@ -6,8 +6,8 @@ interface TableProps {
 export default function Table({ headers, children }: TableProps) {
     return (
         <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-slate-200">
-            <table className="w-full text-left text-sm text-slate-600">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-800">
+            <table className="w-full text-left text-sm text-muted">
+                <thead className="bg-slate-50 border-b border-slate-200 text-surface-deep">
                 <tr>
                     {headers.map((header, index) => (
                         <th key={index} className="px-6 py-4 font-medium">

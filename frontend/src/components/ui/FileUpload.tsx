@@ -20,7 +20,7 @@ export default function FileUpload({ label, accept, onChange, error, selectedFil
             <label className="text-sm font-medium text-slate-700">{label}</label>
 
             <div className={`border-2 border-dashed rounded-md p-6 text-center transition-colors ${
-                error ? "border-red-500 bg-red-50" : "border-slate-300 hover:border-blue-500 bg-slate-50"
+                error ? "border-danger bg-red-50" : "border-slate-300 hover:border-primary bg-slate-50"
             }`}>
                 <input
                     type="file"
@@ -34,7 +34,7 @@ export default function FileUpload({ label, accept, onChange, error, selectedFil
                     htmlFor={`file-upload-${label.replace(/\s+/g, '-')}`}
                     className="cursor-pointer flex flex-col items-center justify-center h-full"
                 >
-          <span className="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors">
+          <span className="text-sm text-primary font-medium hover:text-primary-hover transition-colors">
             Click to browse files
           </span>
                     <span className="text-xs text-slate-500 mt-2 truncate max-w-[200px] md:max-w-xs">
@@ -43,7 +43,7 @@ export default function FileUpload({ label, accept, onChange, error, selectedFil
                 </label>
             </div>
 
-            {error && <span className="text-xs text-red-500">{error}</span>}
+            {error && <span className="text-xs text-danger">{error}</span>}
         </div>
     );
 }

@@ -7,13 +7,8 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import { api } from "@/lib/api";
+import {Department} from "@/types/department";
 
-interface Department {
-    id: number;
-    name: string;
-    description: string | null;
-    is_active: boolean;
-}
 
 export default function DepartmentsPage() {
     const [departments, setDepartments] = useState<Department[]>([]);
@@ -22,7 +17,7 @@ export default function DepartmentsPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    // Edit Modal State
+    // edit Modal State
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingDept, setEditingDept] = useState<Department | null>(null);
     const [editName, setEditName] = useState("");
@@ -52,25 +47,25 @@ export default function DepartmentsPage() {
             setDescription("");
             setFetchTrigger((prev) => prev + 1);
         } catch (error: any) {
-            alert(error.message || "Failed to create department");
+            alert(error.message || "Failed to create department.ts");
         } finally {
             setIsLoading(false);
         }
     };
 
-    // --- NEW: Delete Logic ---
+    // delete logic
     const handleDelete = async (id: number) => {
-        if (!window.confirm("Are you sure you want to delete this department?")) return;
+        if (!window.confirm("Are you sure you want to delete this department.ts?")) return;
 
         try {
             await api.request(`departments/${id}`, { method: "DELETE" });
             setFetchTrigger((prev) => prev + 1);
         } catch (error: any) {
-            alert(error.message || "Failed to delete department");
+            alert(error.message || "Failed to delete department.ts");
         }
     };
 
-    // --- NEW: Open Edit Modal Logic ---
+    // open edit modal logic
     const openEditModal = (dept: Department) => {
         setEditingDept(dept);
         setEditName(dept.name);
@@ -79,7 +74,7 @@ export default function DepartmentsPage() {
         setIsEditModalOpen(true);
     };
 
-    // --- NEW: Update Logic ---
+    // update logic
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editingDept) return;
@@ -97,7 +92,7 @@ export default function DepartmentsPage() {
             setIsEditModalOpen(false);
             setFetchTrigger((prev) => prev + 1);
         } catch (error: any) {
-            alert(error.message || "Failed to update department");
+            alert(error.message || "Failed to update department.ts");
         } finally {
             setIsEditLoading(false);
         }
@@ -106,10 +101,10 @@ export default function DepartmentsPage() {
     return (
         <DashboardLayout>
             <div className="flex flex-col gap-6">
-                <h1 className="text-2xl font-bold text-slate-800">Departments</h1>
+                <h1 className="text-2xl font-bold text-surface-deep">Departments</h1>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h2 className="text-lg font-medium mb-4 text-slate-800">Add New Department</h2>
+                    <h2 className="text-lg font-medium mb-4 text-surface-deep">Add New Department</h2>
                     <form onSubmit={handleCreate} className="flex flex-col md:flex-row gap-4 items-start">
                         <div className="flex-1 w-full">
                             <Input label="Department Name" value={name} onChange={(e) => setName(e.target.value)} required placeholder="e.g., Engineering" />
@@ -135,11 +130,11 @@ export default function DepartmentsPage() {
                         departments.map((dept) => (
                             <tr key={dept.id} className="hover:bg-slate-50 transition-colors">
                                 <td className="px-6 py-4">{dept.id}</td>
-                                <td className="px-6 py-4 font-medium text-slate-800">{dept.name}</td>
+                                <td className="px-6 py-4 font-medium text-surface-deep">{dept.name}</td>
                                 <td className="px-6 py-4">{dept.description || "-"}</td>
                                 <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      dept.is_active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                      dept.is_active ? "bg-green-100 text-green-700" : "bg-red-100 danger-hover"
                   }`}>
                     {dept.is_active ? "Active" : "Inactive"}
                   </span>
@@ -148,13 +143,13 @@ export default function DepartmentsPage() {
                                 <td className="px-6 py-4 flex gap-3">
                                     <button
                                         onClick={() => openEditModal(dept)}
-                                        className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
+                                        className="text-primary hover:text-blue-800 text-sm font-medium transition-colors"
                                     >
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(dept.id)}
-                                        className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
+                                        className="danger hover:danger-hover text-sm font-medium transition-colors"
                                     >
                                         Delete
                                     </button>
@@ -186,7 +181,7 @@ export default function DepartmentsPage() {
                         <div className="flex flex-col gap-1 w-full mb-4">
                             <label className="text-sm font-medium text-slate-700">Status</label>
                             <select
-                                className="border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"
+                                className="border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
                                 value={editIsActive ? "true" : "false"}
                                 onChange={(e) => setEditIsActive(e.target.value === "true")}
                             >

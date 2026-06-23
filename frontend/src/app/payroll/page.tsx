@@ -65,11 +65,11 @@ export default function PayrollPage() {
     return (
         <DashboardLayout>
             <div className="flex flex-col gap-6">
-                <h1 className="text-2xl font-bold text-slate-800">Payroll Management</h1>
+                <h1 className="text-2xl font-bold text-surface-deep">Payroll Management</h1>
 
                 {/* Generate Payroll Form */}
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h2 className="text-lg font-medium mb-4 text-slate-800">Generate Salary Slip</h2>
+                    <h2 className="text-lg font-medium mb-4 text-surface-deep">Generate Salary Slip</h2>
                     <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <Select label="Select Employee" options={empOptions} value={empId} onChange={(e) => setEmpId(e.target.value)} required />
                         <Input label="Month (1-12)" type="number" value={month} onChange={(e) => setMonth(Number(e.target.value))} required />

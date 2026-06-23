@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -13,20 +13,27 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.push("/dashboard");
+        }
+    }, [router]);
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setIsLoading(true);
 
         try {
-            // FastAPI's OAuth2PasswordRequestForm expects URL-encoded form data
+            // fastAPI's OAuth2PasswordRequestForm expects URL-encoded form data
             const formData = new URLSearchParams();
             formData.append("username", email);
             formData.append("password", password);
 
             const response = await api.post("auth/login", formData);
 
-            // Save token and redirect
+            // save token and redirect
             localStorage.setItem("token", response.access_token);
             router.push("/dashboard");
         } catch (err: any) {
@@ -39,12 +46,12 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                <h1 className="text-2xl font-bold text-center mb-6 text-slate-800">
+                <h1 className="text-2xl font-bold text-center mb-6 text-surface-deep">
                     HRM System Login
                 </h1>
 
                 {error && (
-                    <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4 text-sm">
+                    <div className="bg-red-50 text-danger p-3 rounded-md mb-4 text-sm">
                         {error}
                     </div>
                 )}
@@ -73,6 +80,11 @@ export default function LoginPage() {
                             Sign In
                         </Button>
                     </div>
+
+                    <p className="text-center text-sm text-slate-600 mt-4">
+                        Don&#39;t have an account yet?{" "}
+                        <a href="/register" className="text-blue-600 hover:underline">Register</a>
+                    </p>
                 </form>
             </div>
         </div>

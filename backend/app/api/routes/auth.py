@@ -69,3 +69,21 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 def read_users_me(current_user: User = Depends(get_current_user)):
     # This route is protected. It requires a valid JWT to access.
     return current_user
+
+
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+def register(user_in: UserCreate, db: Session = Depends(get_db)):
+    # check if user already exists
+    if db.query(User).filter(User.email == user_in.email).first():
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    # hash password and create user
+    hashed_password = get_password_hash(user_in.password)
+    new_user = User(
+        email=user_in.email,
+        full_name=user_in.full_name,
+        hashed_password=hashed_password
+    )
+    db.add(new_user)
+    db.commit()
+    return {"message": "User registered successfully"}

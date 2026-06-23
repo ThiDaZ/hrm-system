@@ -10,13 +10,13 @@ import FileUpload from "@/components/ui/FileUpload";
 import { api } from "@/lib/api";
 
 export default function EmployeesPage() {
-    // Store data from the database
+    // store data from the database
     const [employees, setEmployees] = useState<any[]>([]);
     const [departments, setDepartments] = useState<any[]>([]);
     const [positions, setPositions] = useState<any[]>([]);
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    // Form input states
+    // form input states
     const [employeeCode, setEmployeeCode] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -27,11 +27,11 @@ export default function EmployeesPage() {
     const [basicSalary, setBasicSalary] = useState("");
     const [employmentType, setEmploymentType] = useState("Full-Time");
 
-    // File upload state
+    // file upload state
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Load all necessary data when the page opens
+    // Lload all necessary data when the page opens
     useEffect(() => {
         const fetchAllData = async () => {
             try {
@@ -50,13 +50,13 @@ export default function EmployeesPage() {
         fetchAllData();
     }, [fetchTrigger]);
 
-    // Handle the form submission
+    // handle the form submission
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            // Step 1: Save the text data first
+            // Save the text data first
             const newEmployee = await api.post("employees", {
                 employee_code: employeeCode,
                 first_name: firstName,
@@ -70,7 +70,7 @@ export default function EmployeesPage() {
                 status: "ONBOARDING"
             });
 
-            // Step 2: If a file was chosen, upload it to the new employee's profile
+            // If a file was chosen, upload it to the new employee's profile
             if (selectedFile) {
                 const formData = new FormData();
                 formData.append("document_type", "Identity/CV");
@@ -79,7 +79,7 @@ export default function EmployeesPage() {
                 await api.post(`employees/${newEmployee.id}/documents`, formData);
             }
 
-            // Clear the form
+            // clear the form
             setEmployeeCode("");
             setFirstName("");
             setLastName("");
@@ -90,7 +90,7 @@ export default function EmployeesPage() {
             setBasicSalary("");
             setSelectedFile(null);
 
-            // Refresh the table
+            // refresh the table
             setFetchTrigger((prev) => prev + 1);
 
         } catch (error: any) {
@@ -100,10 +100,10 @@ export default function EmployeesPage() {
         }
     };
 
-    // Convert data for the dropdown menus
+    // convert data for the dropdown menus
     const deptOptions = departments.map(d => ({ value: d.id, label: d.name }));
 
-    // Only show positions that belong to the chosen department
+    // only show positions that belong to the chosen department.ts
     const filteredPositions = positions
         .filter(p => p.department_id === Number(departmentId))
         .map(p => ({ value: p.id, label: p.title }));
@@ -117,11 +117,11 @@ export default function EmployeesPage() {
     return (
         <DashboardLayout>
             <div className="flex flex-col gap-6">
-                <h1 className="text-2xl font-bold text-slate-800">Employee Onboarding</h1>
+                <h1 className="text-2xl font-bold text-surface-deep">Employee Onboarding</h1>
 
                 {/* The Registration Form */}
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h2 className="text-lg font-medium mb-6 text-slate-800">Register New Employee</h2>
+                    <h2 className="text-lg font-medium mb-6 text-surface-deep">Register New Employee</h2>
 
                     <form onSubmit={handleCreate} className="flex flex-col gap-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -139,7 +139,7 @@ export default function EmployeesPage() {
 
                         {/* The File Upload Area */}
                         <div className="border-t border-slate-200 pt-6">
-                            <h3 className="text-sm font-medium text-slate-800 mb-4">Required Documents</h3>
+                            <h3 className="text-sm font-medium text-surface-deep mb-4">Required Documents</h3>
                             <FileUpload
                                 label="Upload CV or Identity Document"
                                 accept=".pdf,.jpg,.png"
@@ -159,7 +159,7 @@ export default function EmployeesPage() {
                 {/* The Employee Roster Table */}
                 <div className="bg-white rounded-lg shadow-sm border border-slate-200">
                     <div className="p-4 border-b border-slate-200">
-                        <h2 className="text-lg font-medium text-slate-800">Active Roster</h2>
+                        <h2 className="text-lg font-medium text-surface-deep">Active Roster</h2>
                     </div>
                     <Table headers={["Code", "Name", "Email", "Type", "Status"]}>
                         {employees.length === 0 ? (
@@ -171,12 +171,12 @@ export default function EmployeesPage() {
                         ) : (
                             employees.map((emp) => (
                                 <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
-                                    <td className="px-6 py-4 font-medium text-slate-800">{emp.employee_code}</td>
+                                    <td className="px-6 py-4 font-medium text-surface-deep">{emp.employee_code}</td>
                                     <td className="px-6 py-4">{emp.first_name} {emp.last_name}</td>
                                     <td className="px-6 py-4">{emp.email}</td>
                                     <td className="px-6 py-4 text-slate-600">{emp.employment_type}</td>
                                     <td className="px-6 py-4">
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-primary-hover">
                       {emp.status}
                     </span>
                                     </td>
