@@ -46,7 +46,7 @@ def get_department(
     return dept
 
 
-@router.patch("{id}", response_model=DepartmentResponse)
+@router.patch("/{id}", response_model=DepartmentResponse)
 def update_department(
         id: int,
         dept_update: DepartmentUpdate,
@@ -67,7 +67,7 @@ def update_department(
 
 
 
-@router.delete('{id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_department(
         id:int,
         db: Session = Depends(get_db),
