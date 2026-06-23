@@ -10,8 +10,8 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     role = Column(String, default="HR") # e.g., ADMIN, HR
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 class Department(Base):
     __tablename__ = "departments"
@@ -20,8 +20,8 @@ class Department(Base):
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     # relationship to positions
     positions = relationship("Position", back_populates="department")
@@ -34,8 +34,8 @@ class Position(Base):
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     # relationship back to department
     department = relationship("Department", back_populates="positions")
@@ -61,8 +61,8 @@ class Employee(Base):
     basic_salary = Column(Numeric(10, 2), nullable=False)
     status = Column(String, default="ONBOARDING")  # ACTIVE, INACTIVE, ONBOARDING, TERMINATED
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     # Relationships
     department = relationship("Department")
@@ -104,8 +104,8 @@ class Payroll(Base):
     net_salary = Column(Numeric(10, 2), nullable=False)
     payment_status = Column(String, default="PENDING")  # PENDING, PAID, FAILED
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     # relationships
     employee = relationship("Employee", back_populates="payrolls")
