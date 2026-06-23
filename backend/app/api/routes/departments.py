@@ -9,7 +9,7 @@ from app.api.routes.auth import get_current_user
 
 router = APIRouter(prefix="/departments", tags=["Departments"])
 
-@router.post('/', response_model=DepartmentResponse, status_code=status.HTTP_201_CREATED)
+@router.post('', response_model=DepartmentResponse, status_code=status.HTTP_201_CREATED)
 def create_department(
         dept: DepartmentCreate,
         db: Session = Depends(get_db),
@@ -25,7 +25,7 @@ def create_department(
     db.refresh(new_dept)
     return new_dept
 
-@router.get('/', response_model=List[DepartmentResponse])
+@router.get('', response_model=List[DepartmentResponse])
 def get_departments(
         skip: int = 0,
         limit: int = 100,
@@ -34,7 +34,7 @@ def get_departments(
 ):
     return db.query(Department).offset(skip).limit(limit).all()
 
-@router.get('/{id}', response_model=DepartmentResponse)
+@router.get('{id}', response_model=DepartmentResponse)
 def get_department(
         id:int,
         db: Session = Depends(get_db),
@@ -46,7 +46,7 @@ def get_department(
     return dept
 
 
-@router.patch("/{id}", response_model=DepartmentResponse)
+@router.patch("{id}", response_model=DepartmentResponse)
 def update_department(
         id: int,
         dept_update: DepartmentUpdate,
@@ -67,7 +67,7 @@ def update_department(
 
 
 
-@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_department(
         id:int,
         db: Session = Depends(get_db),

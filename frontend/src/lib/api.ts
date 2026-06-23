@@ -19,8 +19,8 @@ export const api = {
         });
 
         if (!response.ok) {
-            const errorDate = await response.json().catch(() => ({}));
-            throw new Error(errorDate);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || "An error occurred");
         }
 
         return response.json();
